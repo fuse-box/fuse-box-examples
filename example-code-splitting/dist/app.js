@@ -10,7 +10,7 @@ document.body.innerHTML = "";
 var h1 = document.createElement("h1");
 h1.innerHTML = "Some stuff here" + path.join("a", "b", "c");
 document.body.appendChild(h1);
-
+//# sourceMappingURL=index.js.map
 });
 });
 
@@ -18,3 +18,4 @@ FuseBox.import("default/index.js");
 FuseBox.main("default/index.js");
 })
 (FuseBox)
+//# sourceMappingURL=app.js.map
