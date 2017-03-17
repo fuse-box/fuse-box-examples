@@ -1,0 +1,23 @@
+{
+  "name": "preview-1.4.1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fuse-box/preview-1.4.1.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fuse-box/preview-1.4.1/issues"
+  },
+  "homepage": "https://github.com/fuse-box/preview-1.4.1#readme",
+  "devDependencies": {
+    "fsbx": "^1.4.1-preview.3",
+    "typescript": "^2.2.1"
+  }
+}
