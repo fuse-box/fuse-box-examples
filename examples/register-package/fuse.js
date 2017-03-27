@@ -1,4 +1,4 @@
-const { FuseBox, HTMLPlugin } = require("fsbx");
+const { FuseBox, HTMLPlugin } = require("fuse-box");
 
 const fuse = FuseBox.init({
     homeDir: "src",
