@@ -1,14 +1,29 @@
 const { Sparky, FuseBox, UglifyJSPlugin } = require("fuse-box");
 
+let producer;
 
-Sparky.task("prepare", () => {
+// main task
+Sparky.task("default", ["clean", "build", "make-html"], () => {});
+
+// wipe it all
+Sparky.task("clean", () => Sparky.src("dist/*").clean("dist/*"));
+
+// copy and replace HTML
+Sparky.task("make-html", () => {
     return Sparky.src("src/index.html")
-        //.clean("dist/")
+        .file("*", file => {
+            let fname;
+            producer.bundles.forEach(bundle => {
+                fname = bundle.context.output.lastGeneratedFileName;
+            })
+            file.template({
+                mainApp: fname
+            });
+        })
         .dest("dist/$name")
-})
+});
 
-
-Sparky.task("default", ["prepare"], () => {
+Sparky.task("build", ["prepare"], () => {
     const fuse = FuseBox.init({
         homeDir: "src",
         cache: true,
@@ -25,5 +40,7 @@ Sparky.task("default", ["prepare"], () => {
         .split("routes/about/**", "about > routes/about/AboutComponent.ts")
         .instructions("> index.ts **/**.ts")
 
-    return fuse.run();
+    return fuse.run().then((fuseProducer) => {
+        producer = fuseProducer;
+    });
 });
