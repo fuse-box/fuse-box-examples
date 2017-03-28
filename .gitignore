@@ -7,6 +7,7 @@ yarn.lock
 build/
 .DS_Store
 .tmp/
+dist/
 .idea/
 .fusebox
 npm-debug.log*
