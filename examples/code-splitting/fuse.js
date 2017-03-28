@@ -12,7 +12,7 @@ Sparky.task("default", ["prepare"], () => {
     const fuse = FuseBox.init({
         homeDir: "src",
         cache: true,
-        //hash: true,
+        hash: true,
         //plugins: [UglifyJSPlugin()],
         output: "dist/$name.js"
     });

@@ -1,27 +1,26 @@
 {
-  "name": "preview-1.4.1",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/fuse-box/preview-1.4.1.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/fuse-box/preview-1.4.1/issues"
-  },
-  "homepage": "https://github.com/fuse-box/preview-1.4.1#readme",
-  "devDependencies": {
-    "@types/express": "^4.0.35",
-    "express": "^4.15.2",
-    "fsbx": "^1.4.1-preview.3",
-    "fuse-box": "^1.4.1-beta.5",
-    "fuse-tools": "^1.0.3",
-    "typescript": "^2.2.1"
-  }
+    "name": "preview-1.4.1",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/fuse-box/preview-1.4.1.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/fuse-box/preview-1.4.1/issues"
+    },
+    "homepage": "https://github.com/fuse-box/preview-1.4.1#readme",
+    "devDependencies": {
+        "@types/express": "^4.0.35",
+        "express": "^4.15.2",
+        "fuse-box": "^1.4.1-beta.6",
+        "fuse-tools": "^1.0.3",
+        "typescript": "^2.2.1"
+    }
 }
