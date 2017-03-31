@@ -1,7 +1,15 @@
 import * as React from "react";
 import { Component } from 'react';
 import { lazyLoad } from "fuse-tools";
+import LazyComponent from "./LazyComponent"
 import MenuComponent from "./MenuComponent";
+import {
+    BrowserRouter as Router,
+    Route,
+    Switch,
+    Link
+} from 'react-router-dom';
+
 
 export default class ApplicationComponent extends Component {
     private state: any;
@@ -11,23 +19,19 @@ export default class ApplicationComponent extends Component {
         this.state = {};
     }
 
-    public display() {
-        if (this.state.LazyComponent) {
-            const LazyComponent = this.state.LazyComponent;
-            return (
-                <LazyComponent />
-            )
-        }
-    }
-
     render() {
         return (
-            <div>
-                <MenuComponent onLazyComponent={
-                    LazyComponent => this.setState({ LazyComponent })
-                } />
-                <div className="jumbotron">{this.display()}</div>
-            </div >
+            <Router>
+                <div>
+                    <MenuComponent />
+                    <div className="jumbotron">
+                        <Switch>
+                            <Route path="/:component" render={route => <LazyComponent bundle={route.match.params.component} />} />
+                        </Switch>
+                    </div>
+                </div>
+            </Router>
+
         );
     }
 }

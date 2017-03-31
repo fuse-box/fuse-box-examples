@@ -1,15 +1,13 @@
 const { Sparky, FuseBox, UglifyJSPlugin, TypeScriptHelpers, CSSPlugin, EnvPlugin } = require("fuse-box");
-
+const express = require("express");
+const path = require("path");
 let producer;
 let production = false;
-
-
-
 
 Sparky.task("build", ["prepare"], () => {
     const fuse = FuseBox.init({
         homeDir: "src",
-        output: "dist/$name.js",
+        output: "dist/static/$name.js",
         hash: production,
         cache: !production,
         plugins: [
@@ -18,7 +16,18 @@ Sparky.task("build", ["prepare"], () => {
         ]
     });
 
-    !production && fuse.dev();
+    if (!production) {
+        // Configure development server
+        fuse.dev({ root: false }, server => {
+            const dist = path.join(__dirname, "dist");
+            const app = server.httpServer.app;
+            app.use("/static/", express.static(path.join(dist, 'static')));
+            app.get("*", function(req, res) {
+                res.sendFile(path.join(dist, "index.html"));
+            });
+        })
+
+    }
 
     // extract dependencies automatically
     const vendor = fuse.bundle("vendor")
@@ -27,7 +36,7 @@ Sparky.task("build", ["prepare"], () => {
 
     const app = fuse.bundle("app")
         // Code splitting ****************************************************************
-        .splitConfig({ browser: "bundles/", dest: "bundles/" })
+        .splitConfig({ browser: "/static/bundles/", dest: "bundles/" })
         .split("routes/about/**", "about > routes/about/AboutComponent.tsx")
         .split("routes/contact/**", "contact > routes/contact/ContactComponent.tsx")
         .split("routes/home/**", "home > routes/home/HomeComponent.tsx")
