@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Component } from 'react';
-import { lazyLoad } from "fuse-tools";
 import LazyComponent from "./LazyComponent"
 import MenuComponent from "./MenuComponent";
 import {
@@ -26,12 +25,12 @@ export default class ApplicationComponent extends Component {
                     <MenuComponent />
                     <div className="jumbotron">
                         <Switch>
+                            <Route exact path="/" render={() => <LazyComponent bundle="home" />} />
                             <Route path="/:component" render={route => <LazyComponent bundle={route.match.params.component} />} />
                         </Switch>
                     </div>
                 </div>
             </Router>
-
         );
     }
 }

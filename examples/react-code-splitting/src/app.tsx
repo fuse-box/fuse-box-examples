@@ -1,7 +1,6 @@
 import "tslib";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { lazyLoad } from "fuse-tools";
 import ApplicationComponent from "./components/ApplicationComponent";
 
 import {
@@ -10,8 +9,8 @@ import {
     Switch,
     Link
 } from 'react-router-dom';
+import "./styles/main.css";
 
-require("./styles/main.css")
 ReactDOM.render(
     <div>
         <ApplicationComponent />
