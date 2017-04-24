@@ -5,11 +5,7 @@ ___scope___.file("index.js", function(exports, require, module, __filename, __di
 "use strict";
 exports.__esModule = true;
 var path = require("path");
-// reset body for HMR
-document.body.innerHTML = "";
-var h1 = document.createElement("h1");
-h1.innerHTML = "Some stuff here" + path.join("a", "b", "c");
-document.body.appendChild(h1);
+document.body.innerHTML = "Path: " + path.join("a", "b", "c");
 //# sourceMappingURL=index.js.map
 });
 });
