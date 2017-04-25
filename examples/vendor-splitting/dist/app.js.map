@@ -1,1 +1,0 @@
-{"version":3,"sources":["index.ts"],"names":[],"mappings":";;;;;;AAAA,2BAA6B;AAE7B,QAAQ,CAAC,IAAI,CAAC,SAAS,GAAG,QAAQ,GAAG,IAAI,CAAC,IAAI,CAAC,GAAG,EAAE,GAAG,EAAE,GAAG,CAAC,CAAA","file":"","sourcesContent":["import * as path from \"path\";\n\ndocument.body.innerHTML = \"Path: \" + path.join(\"a\", \"b\", \"c\")\n\n\n"]}
