@@ -1,9 +1,8 @@
-const { FuseBox, HTMLPlugin } = require("fuse-box");
+const { FuseBox, HTMLPlugin, WebIndexPlugin } = require("fuse-box");
 
 const fuse = FuseBox.init({
     homeDir: "src",
-    output: "dist/$name.js",
-
+    output: "dist/$name.js"
 });
 
 fuse.dev({ port: 4445, httpServer: false });
