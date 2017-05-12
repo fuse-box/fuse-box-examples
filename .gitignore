@@ -1,7 +1,6 @@
 .project
 .settings
 node_modules/
-.vscode/
 .alm/
 yarn.lock
 build/
