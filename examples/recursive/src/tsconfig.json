@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+		"sourceRoot": "../src",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es6"
+  }
+}

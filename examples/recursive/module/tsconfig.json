@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+		"sourceRoot": "../../module",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es6",
+		"baseUrl": "..",
+		"paths": {
+      "mainPack/*": ["./src/*"]
+		}
+  }
+}
