@@ -13,7 +13,7 @@ Sparky.task("build", ["prepare"], () => {
         cache: !production,
         plugins: [
             EnvPlugin({ NODE_ENV: production ? "production" : "development" }),
-            CSSPlugin(), production && UglifyJSPlugin(),
+            CSSPlugin(),
             WebIndexPlugin({
                 title: "React Code Splitting demo",
                 template: "src/index.html",
@@ -21,7 +21,7 @@ Sparky.task("build", ["prepare"], () => {
             }),
             production && QuantumPlugin({
                 removeExportsInterop: false,
-                uglify: false
+                uglify: true
             })
         ]
     });
