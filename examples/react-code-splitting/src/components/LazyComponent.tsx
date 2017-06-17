@@ -31,8 +31,18 @@ export default class LazyComponent extends Component {
         }
     }
 
-    lazyLoad(name) {
-        return lazyLoad(name).then(module => this.setState({ LazyComponent: module.default }))
+    async lazyLoad(name) {
+        let target;
+        if (name === "about") {
+            target = await import("../routes/about/AboutComponent");
+        }
+        if (name === "home") {
+            target = await import("../routes/home/HomeComponent");
+        }
+        if (name === "contact") {
+            target = await import("../routes/contact/ContactComponent");
+        }
+        this.setState({ LazyComponent: target.default });
     }
     render() {
 

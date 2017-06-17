@@ -1,4 +1,4 @@
-const { Sparky, FuseBox, UglifyJSPlugin, TypeScriptHelpers, WebIndexPlugin, CSSPlugin, EnvPlugin } = require("fuse-box");
+const { Sparky, FuseBox, UglifyJSPlugin, QuantumPlugin, WebIndexPlugin, CSSPlugin, EnvPlugin } = require("fuse-box");
 const express = require("express");
 const path = require("path");
 let producer;
@@ -9,6 +9,7 @@ Sparky.task("build", ["prepare"], () => {
         homeDir: "src",
         output: "dist/static/$name.js",
         hash: production,
+        experimentalFeatures: true,
         cache: !production,
         plugins: [
             EnvPlugin({ NODE_ENV: production ? "production" : "development" }),
@@ -17,22 +18,26 @@ Sparky.task("build", ["prepare"], () => {
                 title: "React Code Splitting demo",
                 template: "src/index.html",
                 path: "/static/"
+            }),
+            production && QuantumPlugin({
+                removeExportsInterop: false,
+                uglify: false
             })
         ]
     });
 
-    if (!production) {
-        // Configure development server
-        fuse.dev({ root: false }, server => {
-            const dist = path.join(__dirname, "dist");
-            const app = server.httpServer.app;
-            app.use("/static/", express.static(path.join(dist, 'static')));
-            app.get("*", function(req, res) {
-                res.sendFile(path.join(dist, "static/index.html"));
-            });
-        })
+    //if (!production) {
+    // Configure development server
+    fuse.dev({ root: false }, server => {
+        const dist = path.join(__dirname, "dist");
+        const app = server.httpServer.app;
+        app.use("/static/", express.static(path.join(dist, 'static')));
+        app.get("*", function(req, res) {
+            res.sendFile(path.join(dist, "static/index.html"));
+        });
+    })
 
-    }
+    //  }
 
     // extract dependencies automatically
     const vendor = fuse.bundle("vendor")
@@ -41,7 +46,7 @@ Sparky.task("build", ["prepare"], () => {
 
     const app = fuse.bundle("app")
         // Code splitting ****************************************************************
-        .splitConfig({ browser: "/static/bundles/", dest: "bundles/" })
+        .splitConfig({ browser: "/static/", dest: "bundles/" })
         .split("routes/about/**", "about > routes/about/AboutComponent.tsx")
         .split("routes/contact/**", "contact > routes/contact/ContactComponent.tsx")
         .split("routes/home/**", "home > routes/home/HomeComponent.tsx")
@@ -51,9 +56,7 @@ Sparky.task("build", ["prepare"], () => {
 
     if (!production) { app.hmr().watch() }
 
-    return fuse.run().then((fuseProducer) => {
-        producer = fuseProducer;
-    });
+    return fuse.run();
 });
 
 // main task
