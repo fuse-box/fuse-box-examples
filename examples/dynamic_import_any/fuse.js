@@ -18,7 +18,8 @@ Sparky.task("config", ["copy-test-file"], () => {
             isProduction && QuantumPlugin({
                 target: "universal",
                 bakeApiIntoBundle: "app",
-                uglify: true
+                uglify: true,
+                extendServerImport: true
             })
         ]
     });
