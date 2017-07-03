@@ -5,6 +5,7 @@ const fuse = FuseBox.init({
     plugins: [
         WebIndexPlugin(),
         QuantumPlugin({
+            treeshake: true,
             uglify: true
         })
     ]

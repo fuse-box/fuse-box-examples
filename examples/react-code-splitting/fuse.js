@@ -9,6 +9,7 @@ Sparky.task("build", ["prepare"], () => {
         homeDir: "src",
         output: "dist/static/$name.js",
         hash: production,
+        target: "browser",
         experimentalFeatures: true,
         cache: !production,
         plugins: [
@@ -20,6 +21,7 @@ Sparky.task("build", ["prepare"], () => {
                 path: "/static/"
             }),
             production && QuantumPlugin({
+                treeshake: true,
                 removeExportsInterop: false,
                 uglify: true
             })
