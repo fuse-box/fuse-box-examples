@@ -4,7 +4,7 @@ const path = require("path");
 let producer;
 let production = false;
 
-Sparky.task("build", ["prepare"], () => {
+Sparky.task("build", () => {
     const fuse = FuseBox.init({
         homeDir: "src",
         output: "dist/static/$name.js",
