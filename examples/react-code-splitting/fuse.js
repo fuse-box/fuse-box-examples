@@ -10,6 +10,7 @@ Sparky.task("build", () => {
         output: "dist/static/$name.js",
         hash: production,
         target: "browser",
+        sourceMaps: true,
         experimentalFeatures: true,
         cache: !production,
         plugins: [

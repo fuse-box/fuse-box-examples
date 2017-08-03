@@ -1,5 +1,6 @@
 declare const FuseBox: any;
-
+const someFileLink = require("./hello.txt");
+console.log(someFileLink);
 const doSomethingImportant = () => {
     if (FuseBox.isServer) {
         return require("react")

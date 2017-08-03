@@ -1,5 +1,5 @@
-const { FuseBox, Sparky, WebIndexPlugin, QuantumPlugin } = require("fuse-box");
-
+const { FuseBox, Sparky, WebIndexPlugin, QuantumPlugin, CopyPlugin } = require("fuse-box");
+const path = require("path");
 let fuse, app, isProduction;
 let serverTarget = true;
 
@@ -13,6 +13,10 @@ Sparky.task("config", () => {
         hash: true,
         plugins: [
             WebIndexPlugin(),
+            CopyPlugin({
+                files: ["*.txt"],
+
+            }),
             QuantumPlugin({
                 bakeApiIntoBundle: "app",
                 target: serverTarget ? "server" : "browser",
