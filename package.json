@@ -19,7 +19,7 @@
   "devDependencies": {
     "@types/express": "^4.0.35",
     "express": "^4.15.2",
-    "fuse-box": "^2.2.2-beta.7",
+    "fuse-box": "2.2.2-beta.11",
     "fuse-test-runner": "^1.0.12",
     "fuse-tools": "^1.0.3",
     "node-sass": "^4.5.2",
