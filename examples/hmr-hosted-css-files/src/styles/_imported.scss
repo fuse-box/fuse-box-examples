@@ -1,0 +1,5 @@
+@import 'variables';
+body {
+    border: 1em solid $color;
+    outline: 1em dashed yellow;
+}

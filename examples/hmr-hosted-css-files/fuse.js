@@ -21,7 +21,7 @@ const fuse = FuseBox.init({
                 outFile: ''
             }),
             CSSPlugin({
-                inject: file => `./bundle-static.css`,
+                inject: file => `/dist/bundle-static.css`,
                 outFile: file => `./dist/bundle-static.css`
             })
         ],
