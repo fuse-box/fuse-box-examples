@@ -1,22 +1,23 @@
 {
-  "name": "react-fuse-starter",
+  "name": "react-ts-fuse-example",
   "version": "1.0.0",
-  "description": "React, ReFlux, TypeScript, Fuse-Box Starter / Boilerplate / Seed",
+  "description": "React, TypeScript, Fuse-Box Starter / Boilerplate / Seed",
   "main": "gulpfile.js",
   "scripts": {
-    "start": "node fuse",
+    "serve": "node fuse",
+    "build": "node fuse dist",
     "test": "node fuse tests"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BusinessDuck/react-fuse-starter"
+    "url": "git+https://github.com/fuse-box/fuse-box-examples/react-typescript"
   },
   "author": "Dmitriy Yurov",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/BusinessDuck/react-fuse-starter/issues"
+    "url": "https://github.com/fuse-box/fuse-box-examples/issues"
   },
-  "homepage": "https://github.com/BusinessDuck/react-fuse-starter",
+  "homepage": "https://github.com/fuse-box/fuse-box-examples",
   "devDependencies": {
     "@types/core-js": "^0.9.43",
     "@types/jest": "^20.0.8",
@@ -25,7 +26,6 @@
     "enzyme": "^2.9.1",
     "fuse-box": "^2.2.2",
     "fuse-box-typechecker": "git://github.com/fuse-box/fuse-box-typechecker.git",
-    "http-server": "^0.10.0",
     "jest": "^20.0.4",
     "node-sass": "^4.5.3",
     "react-test-renderer": "^15.6.1",

@@ -15,10 +15,14 @@
 #### Build commands:
 
 1. `
-npm start
+npm run serve
 `
 2. `
 npm run tests //isolate run test by Jest
+`
+#### Production build
+3. `
+npm run build
 `
 
 

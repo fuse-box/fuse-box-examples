@@ -5,8 +5,9 @@ const {
     CSSPlugin,
     WebIndexPlugin,
     Sparky,
-    HotReloadPlugin,
+    QuantumPlugin,
 } = require("fuse-box");
+
 const updateNotifier = require('update-notifier');
 const pkg = require('./package.json');
 // load
@@ -18,31 +19,33 @@ const testAsync = TypeHelper({
     name: 'Test async'
 });
 const { runCLI } = require("jest");
-
-let fuse, app, vendor, isProduction;
+let fuse, app, api, vendor, isProduction;
 
 Sparky.task("config", () => {
     fuse = FuseBox.init({
         homeDir: "src",
         output: "dist/$name.js",
         tsConfig: "tsconfig.json",
+        useJsNext : ["react", "react-dom"],
+        polyfillNonStandardDefaultUsage : ["react", "react-dom"],
         sourceMaps: !isProduction,
         plugins: [
             [SassPlugin(), CSSPlugin()],
-            HotReloadPlugin({
-                port: "4444",
-                uri: ""
-            }),
             TypeScriptHelpers(),
             WebIndexPlugin({
                 template: "src/index.html",
                 title: "React + Reflux example",
                 target: "index.html",
-                bundles: ["app", "vendor"]
+                bundles: ["api", "app", "vendor"]
+            }),
+            isProduction && QuantumPlugin({
+                treeshake : true,
+                uglify: true,
             })
         ]
     });
 
+    api = fuse.bundle("api");
     vendor = fuse.bundle("vendor").instructions("~/application.tsx");
     app = fuse.bundle("app").instructions(" !> [/development.tsx]");
     testAsync.runAsync();
@@ -53,11 +56,9 @@ Sparky.task("check-updates", () => {
 });
 
 Sparky.task("default", ["clean", "config", "check-updates", "tests"], () => {
-    if (!isProduction) {
-        fuse.dev({
-            root: "dist"
-        });
-    }
+    fuse.dev({
+        root: "dist"
+    });
     // add dev instructions
     app.watch().hmr();
     return fuse.run();
