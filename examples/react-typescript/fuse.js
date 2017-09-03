@@ -3,6 +3,7 @@ const {
     TypeScriptHelpers,
     SassPlugin,
     CSSPlugin,
+    CSSModules,
     WebIndexPlugin,
     Sparky,
     QuantumPlugin,
@@ -31,11 +32,11 @@ Sparky.task("config", () => {
         polyfillNonStandardDefaultUsage : ["react", "react-dom"],
         sourceMaps: !isProduction,
         plugins: [
-            [SassPlugin(), CSSPlugin()],
+            [SassPlugin(), CSSModules(), CSSPlugin()],
             TypeScriptHelpers(),
             WebIndexPlugin({
                 template: "src/index.html",
-                title: "React + Reflux example",
+                title: "React + TypeScript example",
                 target: "index.html",
                 bundles: ["app", "vendor"]
             }),
@@ -48,7 +49,7 @@ Sparky.task("config", () => {
     });
 
     vendor = fuse.bundle("vendor").instructions("~/application.tsx");
-    app = fuse.bundle("app").instructions(" !> [/development.tsx]");
+    app = fuse.bundle("app").instructions(" !> [development.tsx]");
     testAsync.runAsync();
 });
 
