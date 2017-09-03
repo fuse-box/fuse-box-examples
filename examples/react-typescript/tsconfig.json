@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "ES6",
+    "noEmitOnError": false
+  },
+  "compileOnSave": false
+}
