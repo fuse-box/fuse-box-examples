@@ -3,6 +3,7 @@ const {
     TypeScriptHelpers,
     SassPlugin,
     CSSPlugin,
+    CSSModules,
     WebIndexPlugin,
     Sparky,
     QuantumPlugin,
@@ -19,7 +20,8 @@ const testAsync = TypeHelper({
     name: 'Test async'
 });
 const { runCLI } = require("jest");
-let fuse, app, api, vendor, isProduction;
+
+let fuse, app, vendor, isProduction;
 
 Sparky.task("config", () => {
     fuse = FuseBox.init({
@@ -30,24 +32,24 @@ Sparky.task("config", () => {
         polyfillNonStandardDefaultUsage : ["react", "react-dom"],
         sourceMaps: !isProduction,
         plugins: [
-            [SassPlugin(), CSSPlugin()],
+            [SassPlugin(), CSSModules(), CSSPlugin()],
             TypeScriptHelpers(),
             WebIndexPlugin({
                 template: "src/index.html",
-                title: "React + Reflux example",
+                title: "React + TypeScript example",
                 target: "index.html",
-                bundles: ["api", "app", "vendor"]
+                bundles: ["app", "vendor"]
             }),
             isProduction && QuantumPlugin({
+                bakeApiIntoBundle : 'vendor',
                 treeshake : true,
                 uglify: true,
             })
         ]
     });
 
-    api = fuse.bundle("api");
     vendor = fuse.bundle("vendor").instructions("~/application.tsx");
-    app = fuse.bundle("app").instructions(" !> [/development.tsx]");
+    app = fuse.bundle("app").instructions(" !> [development.tsx]");
     testAsync.runAsync();
 });
 
