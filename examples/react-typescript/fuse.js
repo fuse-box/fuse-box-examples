@@ -3,7 +3,6 @@ const {
     TypeScriptHelpers,
     SassPlugin,
     CSSPlugin,
-    CSSModules,
     WebIndexPlugin,
     Sparky,
     QuantumPlugin,
@@ -32,13 +31,12 @@ Sparky.task("config", () => {
         polyfillNonStandardDefaultUsage : ["react", "react-dom"],
         sourceMaps: !isProduction,
         plugins: [
-            [SassPlugin(), CSSModules(), CSSPlugin()],
+            [SassPlugin(), CSSPlugin()],
             TypeScriptHelpers(),
             WebIndexPlugin({
                 template: "src/index.html",
                 title: "React + TypeScript example",
-                target: "index.html",
-                bundles: ["app", "vendor"]
+                target: "index.html"
             }),
             isProduction && QuantumPlugin({
                 bakeApiIntoBundle : 'vendor',

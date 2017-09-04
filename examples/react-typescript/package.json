@@ -28,7 +28,6 @@
     "fuse-box-typechecker": "git://github.com/fuse-box/fuse-box-typechecker.git",
     "jest": "^20.0.4",
     "node-sass": "^4.5.3",
-    "postcss-modules": "^0.8.0",
     "react-test-renderer": "^15.6.1",
     "run-sequence": "^2.1.0",
     "ts-jest": "^20.0.13",
