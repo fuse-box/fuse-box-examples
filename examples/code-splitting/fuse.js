@@ -19,7 +19,7 @@ Sparky.task("config", () => {
 
     // vendor should come first
     vendor = fuse.bundle("vendor")
-        .instructions("~ index.ts");
+        .instructions("~ index.ts +moment");
 
     // out main bundle
     app = fuse.bundle("app")
