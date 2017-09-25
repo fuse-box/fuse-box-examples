@@ -13,3 +13,7 @@ const fuse = FuseBox.init({
 app = fuse.bundle("app")
     .instructions(">index.ts")
 fuse.run()
+
+// Foo=hello node fuse
+// Foo=world node fuse
+// Foo=bar node fuse
