@@ -4,7 +4,7 @@ let isProduction = false;
 let fuse;
 
 Sparky.task("worker", () => {
-    // workers should live in a separate production by design
+    // workers should live in a separate producer by design
     const worker = FuseBox.init({
         homeDir: "src/worker",
         output: "dist/$name.js",
