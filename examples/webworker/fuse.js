@@ -4,13 +4,14 @@ let isProduction = false;
 let fuse;
 
 Sparky.task("worker", () => {
+    // workers should live in a separate production by design
     const worker = FuseBox.init({
         homeDir: "src/worker",
         output: "dist/$name.js",
         sourceMaps: !isProduction,
         plugins: [
             isProduction && QuantumPlugin({
-                // this options are essentials
+                // these options are essentials
                 // it should be an isolated 1 bundle
                 containedAPI: true,
                 bakeApiIntoBundle: "worker"
@@ -20,7 +21,6 @@ Sparky.task("worker", () => {
     // workers can't have HMR
     // should contain only 1 bundle (no vendors allowed)
     // Cannot contain CSS Related plugins
-
     const workerBundle = worker.bundle("worker")
         .instructions("> index.ts");
     if (!isProduction) {
