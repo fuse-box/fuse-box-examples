@@ -1,0 +1,21 @@
+{
+  "extends": [
+    "tslint:recommended"
+  ],
+  "rules": {
+    "no-reference": false,
+    "no-unused-expression": false,
+    "no-console": [false, "log", "error"],
+    "arrow-parens": false,
+    "interface-name": false,
+    "eofline": false,
+    "one-variable-per-declaration": false,
+    "ordered-imports": false,
+    "unified-signatures": false,
+    "member-ordering": false,
+    "trailing-comma": false,
+    "object-literal-sort-keys": false,
+    "object-literal-key-quotes": false,
+    "max-line-length": { "options": [180] }
+  }
+}

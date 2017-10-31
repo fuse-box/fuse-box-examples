@@ -1,0 +1,42 @@
+{
+  "name": "react-ts-less-fuse-example",
+  "version": "1.0.0",
+  "description": "React, TypeScript, Fuse-Box Starter / Boilerplate / Seed",
+  "main": "gulpfile.js",
+  "scripts": {
+    "serve": "node fuse",
+    "build": "node fuse dist",
+    "test": "node fuse tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fuse-box/fuse-box-examples/react-typescript-less"
+  },
+  "author": "Dmitriy Yurov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fuse-box/fuse-box-examples/issues"
+  },
+  "homepage": "https://github.com/fuse-box/fuse-box-examples",
+  "dependencies": {
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "tslib": "^1.7.1"
+  },
+  "devDependencies": {
+    "@types/react": "^16.0.7",
+    "@types/react-dom": "^16.0.2",
+    "babel-core": "^6.26.0",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-latest": "^6.24.1",
+    "fuse-box": "^2.4.0",
+    "fuse-test-runner": "^1.0.15",
+    "fuse-tools": "^1.0.5",
+    "less": "^2.7.3",
+    "lodash": "^4.17.4",
+    "react-devtools": "^2.5.2",
+    "tslint": "^5.7.0",
+    "typescript": "^2.5.3",
+    "uglify-js": "^3.1.6"
+  }
+}
