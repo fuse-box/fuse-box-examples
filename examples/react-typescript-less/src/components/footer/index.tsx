@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Component} from "react";
-import "style.less";
+import "./style.less";
 
 /**
  * @class Footer

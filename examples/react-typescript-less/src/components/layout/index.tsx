@@ -3,7 +3,7 @@ import {Component} from "react";
 import Header from "../header";
 import Main from "../main";
 import Footer from "../footer";
-import "style.less";
+import "./style.less";
 
 /**
  * @class Layout
