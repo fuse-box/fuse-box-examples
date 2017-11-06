@@ -1,6 +1,8 @@
 const { FuseBox, Sparky, QuantumPlugin, WebIndexPlugin, LESSPlugin, CSSPlugin } = require("fuse-box");
 const { merge } = require("lodash");
 const path = require("path");
+const LessPluginCleanCSS = require("less-plugin-clean-css");
+const cleanCSSPlugin = new LessPluginCleanCSS({advanced: true});
 
 /** -------------------------------------
  * CONFIGURATIONS
@@ -21,7 +23,8 @@ const fuseConfig = {
     [LESSPlugin({
         paths: [
           path.resolve(__dirname, "node_modules")
-        ]
+        ],
+      plugins: [cleanCSSPlugin]
     }), CSSPlugin()]
   ]
 };
