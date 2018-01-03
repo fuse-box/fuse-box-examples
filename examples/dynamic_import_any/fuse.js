@@ -1,9 +1,26 @@
 const { FuseBox, Sparky, WebIndexPlugin, QuantumPlugin } = require("fuse-box");
 const { src, task, watch, context, fuse } = require("fuse-box/sparky");
 
-context({
-    createBundle(){
-        const app = this.fuse.bundle("app");
+
+context(class {
+    getConfig() {
+        return FuseBox.init({
+            homeDir: "src",
+            output: "dist/$name.js",
+            hash: this.isProduction,
+            plugins: [
+                WebIndexPlugin(),
+                this.isProduction && QuantumPlugin({
+                    target: "universal",
+                    bakeApiIntoBundle: "app",
+                    uglify: true,
+                    extendServerImport: true
+                })
+            ]
+        })
+    }
+    createBundle(fuse) {
+        const app = fuse.bundle("app");
         if (!this.isProduction) {
             app.watch()
             app.hmr()
@@ -13,34 +30,25 @@ context({
     }
 });
 
-fuse(context => ({
-    homeDir: "src",
-    output: "dist/$name.js",
-    hash: context.isProduction,
-    plugins: [
-        WebIndexPlugin(),
-        context.isProduction && QuantumPlugin({
-            target: "universal",
-            bakeApiIntoBundle: "app",
-            uglify: true,
-            extendServerImport: true
-        })
-    ]
-}))
-
 
 task("copy:test-file", () =>
     src("target.txt").dest("dist/$name").exec())
 
 task("default", ["copy:test-file"], async context => {
-    context.fuse.dev();
-    context.createBundle();
-    await context.fuse.run();
+    const fuse = context.getConfig();
+    fuse.dev();
+    context.createBundle(fuse);
+    await fuse.run();
 });
 
 task("dist", ["copy:test-file"], async context => {
     context.isProduction = true;
-    context.fuse.dev();
-    context.createBundle();
-    await context.fuse.run();
+    const fuse = context.getConfig();
+    fuse.dev(); // remove it later
+    context.createBundle(fuse);
+    await fuse.run();
 });
+
+
+
+

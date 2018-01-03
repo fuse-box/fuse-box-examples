@@ -1,55 +1,51 @@
-const { FuseBox, CSSPlugin, SassPlugin, WebIndexPlugin, QuantumPlugin, Sparky } = require("fuse-box");
+const { FuseBox, Sparky, WebIndexPlugin, QuantumPlugin } = require("fuse-box");
+const { src, task, watch, context, fuse } = require("fuse-box/sparky");
 
-let fuse, app, vendor, isProduction = false;
 
-Sparky.task("config", () => {
-    fuse = FuseBox.init({
-        homeDir: "src",
-        output: "dist/$name.js",
-        experimentalFeatures: true,
-        hash: isProduction,
-        sourceMaps: !isProduction,
-        plugins: [
-            WebIndexPlugin(),
-            isProduction && QuantumPlugin({
-                uglify: true
-            }),
-        ]
-    });
-
-    // vendor should come first
-    vendor = fuse.bundle("vendor")
-        .instructions("~ index.ts +moment");
-
-    // out main bundle
-    app = fuse.bundle("app")
-        .split("routes/home/**", "home > routes/home/HomeComponent.ts")
-        .split("routes/about/**", "about > routes/about/AboutComponent.ts")
-        .instructions("> [index.ts] [**/**.ts]")
-
-    if (!isProduction) {
-        fuse.dev();
+context(class {
+    getConfig() {
+        return FuseBox.init({
+            homeDir: "src",
+            output: "dist/$name.js",
+            hash: this.isProduction,
+            plugins: [
+                WebIndexPlugin(),
+                this.isProduction && QuantumPlugin({
+                    target: "universal",
+                    bakeApiIntoBundle: "app",
+                    uglify: true,
+                    extendServerImport: true
+                })
+            ]
+        })
+    }
+    createBundle(fuse) {
+        const app = fuse.bundle("app");
+        if (!this.isProduction) {
+            app.watch()
+            app.hmr()
+        }
+        app.instructions(">index.ts");
+        return app;
     }
 });
 
-// development task "node fuse""
-Sparky.task("default", ["config"], () => {
-    vendor.hmr().watch();
-    app.watch();
-    return fuse.run();
-});
 
-// Dist task "node fuse dist"
-Sparky.task("dist", ["set-production", "config"], () => {
+task("default", async context => {
+    const fuse = context.getConfig();
     fuse.dev();
-    return fuse.run();
+    context.createBundle(fuse);
+    await fuse.run();
 });
 
-Sparky.task("set-production", () => {
-    isProduction = true;
-    return Sparky.src("dist/").clean("dist/");
+task("dist", async context => {
+    context.isProduction = true;
+    const fuse = context.getConfig();
+    fuse.dev(); // remove it later
+    context.createBundle(fuse);
+    await fuse.run();
 });
 
-Sparky.task("test", ["config"], () => {
-    return app.test();
-});
+
+
+

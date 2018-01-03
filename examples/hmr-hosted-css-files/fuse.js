@@ -1,49 +1,59 @@
-const {
-    FuseBox,
-    Sparky,
-    SassPlugin,
-    CSSPlugin,
-    WebIndexPlugin
-} = require('fuse-box');
+const { FuseBox, Sparky, WebIndexPlugin, SassPlugin, CSSPlugin, QuantumPlugin } = require("fuse-box");
+const { src, task, watch, context, fuse } = require("fuse-box/sparky");
 
-const fuse = FuseBox.init({
-    homeDir: "src",
-    output: "dist/$name.js",
-    sourceMaps: {
-        inline: false,
-        sourceRoot: "/src"
-    },
-    plugins: [
-        [
-            SassPlugin({
-                outputStyle: 'compressed',
-                sourceMap: `bundle-static.css.map`,
-                outFile: ''
-            }),
-            CSSPlugin({
-                inject: file => `/dist/bundle-static.css`,
-                outFile: file => `./dist/bundle-static.css`
-            })
-        ],
-        WebIndexPlugin({
-            path: '.'
+
+context(class {
+    getConfig() {
+        return FuseBox.init({
+            homeDir: "src",
+            output: "dist/$name.js",
+            target : "browser@es5",
+            hash: this.isProduction,
+            plugins: [
+                WebIndexPlugin({path : "."}),
+                this.isProduction && QuantumPlugin({
+                    bakeApiIntoBundle: "app",
+                    uglify: false,
+                    extendServerImport: true
+                }),
+                [
+                    SassPlugin({
+                        outputStyle: 'compressed',
+                        sourceMap: `bundle-static.css.map`,
+                        outFile: ''
+                    }),
+                    CSSPlugin({
+                        inject: file => `/bundle-static.css`,
+                        outFile: file => `./dist/bundle-static.css`
+                    })
+                ]
+            ]
         })
-    ]
+    }
+    createBundle(fuse) {
+        const app = fuse.bundle("app");
+        if (!this.isProduction) {
+            app.watch()
+            app.hmr()
+        }
+        app.instructions(">index.ts");
+        return app;
+    }
 });
 
-Sparky.task("watch", () => {
-    const bundle = fuse.bundle(`bundle-static`)
-        .target('browser')
-        .instructions(`> index.ts`)
-        .watch()
-        .hmr();
+task("clean", () => src("dist").clean("dist").exec() )
 
-    fuse.dev({
-        root: './',
-        // open: '/dist' // would be nice to choose a path to open // for now open http://localhost:4444/dist/ manually
-    });
-    fuse
-        .run();
+task("default", ["clean"], async context => {
+    const fuse = context.getConfig();
+    fuse.dev();
+    context.createBundle(fuse);
+    await fuse.run();
 });
 
-Sparky.task("default", ["watch"], () => {});
+task("dist", ["clean"], async context => {
+    context.isProduction = true;
+    const fuse = context.getConfig();
+    fuse.dev(); // remove it later
+    context.createBundle(fuse);
+    await fuse.run();
+});

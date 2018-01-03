@@ -1,74 +1,69 @@
-const { Sparky, FuseBox, UglifyJSPlugin, QuantumPlugin, WebIndexPlugin, CSSPlugin, EnvPlugin } = require("fuse-box");
+const { FuseBox, Sparky, WebIndexPlugin, CSSPlugin, QuantumPlugin } = require("fuse-box");
+const { src, task, watch, context, fuse } = require("fuse-box/sparky");
 const express = require("express");
 const path = require("path");
-let producer;
-let production = false;
 
-Sparky.task("build", () => {
-    const fuse = FuseBox.init({
-        homeDir: "src",
-        output: "dist/static/$name.js",
-        hash: production,
-        target: "browser",
-        sourceMaps: true,
-        experimentalFeatures: true,
-        cache: !production,
-        plugins: [
-            EnvPlugin({ NODE_ENV: production ? "production" : "development" }),
-            CSSPlugin(),
-            WebIndexPlugin({
-                title: "React Code Splitting demo",
-                template: "src/index.html",
-                path: "/static/"
-            }),
-            production && QuantumPlugin({
-                treeshake: true,
-                removeExportsInterop: false,
-                uglify: true
-            })
-        ]
-    });
+context(class {
+    getConfig() {
+        return FuseBox.init({
+            homeDir: "src",
+            output: "dist/$name.js",
+            hash: this.isProduction,
+            target: "browser@es5",
+            plugins: [
+                WebIndexPlugin({
+                    title: "React Code Splitting demo",
+                    template: "src/index.html",
+                    //path: "/static/"
+                }),
+                CSSPlugin(),
+                this.isProduction && QuantumPlugin({
+                    bakeApiIntoBundle: "static/app",
+                    uglify: false,
+                    extendServerImport: true
+                })
+            ]
+        })
+    }
+    createBundle(fuse) {
+        const app = fuse.bundle("static/app");
+        app.splitConfig({ dest: "static" })
+        if (!this.isProduction) {
+            app.watch()
+            app.hmr()
+        }
+        app.instructions(">app.tsx");
+        return app;
+    }
 
-    //if (!production) {
-    // Configure development server
-    fuse.dev({ root: false }, server => {
-        const dist = path.join(__dirname, "dist");
-        const app = server.httpServer.app;
-        app.use("/static/", express.static(path.join(dist, 'static')));
-        app.get("*", function(req, res) {
-            res.sendFile(path.join(dist, "static/index.html"));
+    enableServer(fuse) {
+        fuse.dev({ root: false }, server => {
+            const dist = path.join(__dirname, "dist");
+            const app = server.httpServer.app;
+            app.use("/static/", express.static(path.join(dist, 'static')));
+            app.get("*", function(req, res) {
+                res.sendFile(path.join(dist, "index.html"));
+            });
         });
-    })
-
-    //  }
-
-    // extract dependencies automatically
-    const vendor = fuse.bundle("vendor")
-        .instructions(`~ **/**.{ts,tsx} +tslib`)
-    if (!production) { vendor.hmr(); }
-
-    const app = fuse.bundle("app")
-        // Code splitting ****************************************************************
-        .splitConfig({ browser: "/static/", dest: "bundles/" })
-        .split("routes/about/**", "about > routes/about/AboutComponent.tsx")
-        .split("routes/contact/**", "contact > routes/contact/ContactComponent.tsx")
-        .split("routes/home/**", "home > routes/home/HomeComponent.tsx")
-        // bundle the entry point without deps
-        // bundle routes for lazy loading as there is not require statement in or entry point
-        .instructions(`> [app.tsx] + [routes/**/**.{ts, tsx}]`)
-
-    if (!production) { app.hmr().watch() }
-
-    return fuse.run();
+    }
 });
 
-// main task
-Sparky.task("default", ["clean", "build"], () => {});
 
-// wipe it all
-Sparky.task("clean", () => Sparky.src("dist/*").clean("dist/"));
+task("clean", () => src("dist").clean("dist").exec());
 
+task("default", ["clean"], async context => {
+    const fuse = context.getConfig();
+    context.enableServer(fuse);
 
+    context.createBundle(fuse);
+    await fuse.run();
+});
 
-Sparky.task("set-production-env", () => production = true);
-Sparky.task("dist", ["clean", "set-production-env", "build"], () => {})
+task("dist", ["clean"], async context => {
+    context.isProduction = true;
+    const fuse = context.getConfig();
+    context.enableServer(fuse);
+    //fuse.dev(); // remove it later
+    context.createBundle(fuse);
+    await fuse.run();
+});
