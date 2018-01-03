@@ -29,6 +29,7 @@
     "uglify-js": "^3.0.17"
   },
   "dependencies": {
+    "fuse-ts-raw-package": "^1.0.2",
     "moment": "^2.18.1",
     "react": "^15.4.2",
     "react-async-component": "^1.0.0-alpha.1",
