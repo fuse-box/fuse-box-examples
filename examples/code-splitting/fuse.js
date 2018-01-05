@@ -7,11 +7,11 @@ context(class {
         return FuseBox.init({
             homeDir: "src",
             output: "dist/$name.js",
+            target : "browser@es5",
             hash: this.isProduction,
             plugins: [
                 WebIndexPlugin(),
                 this.isProduction && QuantumPlugin({
-                    target: "universal",
                     bakeApiIntoBundle: "app",
                     uglify: true,
                     extendServerImport: true
@@ -45,7 +45,3 @@ task("dist", async context => {
     context.createBundle(fuse);
     await fuse.run();
 });
-
-
-
-
