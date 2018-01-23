@@ -22,7 +22,6 @@ context(class {
                 WebIndexPlugin({
                     template: "src/index.html"
                 }),
-
                 [
                     SassPlugin(),
                     CSSResourcePlugin({
