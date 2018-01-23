@@ -1,0 +1,8 @@
+@import "bar.css";
+
+.fuse-box {
+    background-image: url("./assets/logo.png");
+    width: 200px;
+    height: 200px;
+    background-size: cover;
+}

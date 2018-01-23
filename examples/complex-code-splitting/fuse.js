@@ -1,12 +1,4 @@
-const {
-    FuseBox,
-    Sparky,
-    SassPlugin,
-    WebIndexPlugin,
-    CSSPlugin,
-    CSSResourcePlugin,
-    QuantumPlugin
-} = require("fuse-box");
+const { FuseBox, Sparky, WebIndexPlugin, QuantumPlugin } = require("fuse-box");
 const { src, task, watch, context, fuse } = require("fuse-box/sparky");
 
 
@@ -15,31 +7,22 @@ context(class {
         return FuseBox.init({
             homeDir: "src",
             output: "dist/$name.js",
-            hash: this.isProduction,
-            sourceMaps: true,
-            target: "browser",
+            target : "server@es6",
+            //hash: this.isProduction,
             plugins: [
-                WebIndexPlugin({
-                    template: "src/index.html"
-                }),
-
-                [
-                    SassPlugin(),
-                    CSSResourcePlugin({
-                        dist: "dist/css-resources"
-                    }), CSSPlugin()
-                ],
+                WebIndexPlugin(),
                 this.isProduction && QuantumPlugin({
                     bakeApiIntoBundle: "app",
-                    uglify: true,
-                    css : { clean : true},
+                    manifest : true,
+                    uglify: false,
                     extendServerImport: true
                 })
             ]
         })
     }
     createBundle(fuse) {
-        const app = fuse.bundle("app");
+        const app = fuse
+            .bundle("app");
         if (!this.isProduction) {
             app.watch()
             app.hmr()

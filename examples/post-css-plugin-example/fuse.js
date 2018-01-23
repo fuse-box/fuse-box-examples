@@ -5,7 +5,8 @@ const {
     WebIndexPlugin,
     CSSPlugin,
     CSSResourcePlugin,
-    QuantumPlugin
+    QuantumPlugin,
+    PostCSSPlugin,
 } = require("fuse-box");
 const { src, task, watch, context, fuse } = require("fuse-box/sparky");
 
@@ -22,12 +23,12 @@ context(class {
                 WebIndexPlugin({
                     template: "src/index.html"
                 }),
-
                 [
-                    SassPlugin(),
+                    PostCSSPlugin([require("postcss-import")]),
                     CSSResourcePlugin({
                         dist: "dist/css-resources"
-                    }), CSSPlugin()
+                    }),
+                    CSSPlugin()
                 ],
                 this.isProduction && QuantumPlugin({
                     bakeApiIntoBundle: "app",
