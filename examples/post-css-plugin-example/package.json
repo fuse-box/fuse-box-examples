@@ -1,9 +1,0 @@
-{
-  "dependencies": {
-    "clean-css": "^4.1.9"
-  },
-  "devDependencies": {
-    "fuse-box": "^3.1.0-next.16",
-    "postcss-import": "^11.0.0"
-  }
-}
