@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "alwaysStrict": true,
+    "importHelpers": true,
+    "sourceMap": true,
+    "inlineSourceMap": true,
+    "preserveConstEnums": true,
+    "target": "es2016",
+    "module": "commonjs",
+    "outDir": "dist",
+    "jsx": "react",
+    "moduleResolution": "node",
+
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "strictNullChecks": true,
+    "noImplicitReturns": true,
+    "allowJs": true,
+
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "allowSyntheticDefaultImports": false,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "*": ["*","src/*","src/project/*"],
+      "@coglite/*": ["src/packages/*"]
+     },
+    "lib": ["es6","es2015", "es2016", "es2017", "dom"]
+    
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}

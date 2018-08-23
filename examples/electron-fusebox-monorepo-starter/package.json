@@ -1,0 +1,41 @@
+{
+  "name": "fusebox-electron-monorepo-starter",
+  "version": "0.0.1",
+  "description": "Fuse Box <3",
+  "author":"jeremy-coleman",
+  "main": "dist/desktop/main.js",
+  "scripts": {
+    "start": "node fuse",
+    "start:prod": "cross-env NODE_ENV=production node fuse",
+    "force:rebuild":"npm rebuild --runtime=electron --target=3.0.0-beta.5 --disturl=https://atom.io/download/atom-shell --abi=64",
+    "clean": "rimraf dist .fusebox",
+    "app": "electron .",
+    "package": "cross-env NODE_ENV=production node fuse && electron-packager . Release --platform=darwin --arch=x64 --overwrite",
+    "release": "electron-packager . Release --platform=darwin --arch=x64 --overwrite"
+  },
+  "dependencies": {
+    "dotenv": "^6.0.0",
+    "electron-devtools-installer": "2.2.4",
+    "execa": "0.11.0",
+    "fuse-box": "3.4.0",
+    "glamor": "2.20.40",
+    "glamorous": "4.13.1",
+    "glamorous-grid": "1.0.2",
+    "react": "16.4.2",
+    "react-dom": "16.4.2",
+    "reflect-metadata": "0.1.12",
+    "semantic-ui-css": "2.3.3",
+    "styled-components": "3.4.4",
+    "tslib": "1.9.3"
+  },
+  "devDependencies": {
+    "@types/execa": "0.9.0",
+    "@types/react": "16.4.11",
+    "@types/react-dom": "16.0.7",
+    "electron": "3.0.0-beta.5",
+    "electron-rebuild": "1.8.2",
+    "electron-packager": "12.1.1",
+    "node-sass": "4.9.3",
+    "typescript": "3.0.1"
+  }
+}
